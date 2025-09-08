@@ -139,7 +139,8 @@ std::tuple<uri::Authority, uri::Error, uri::string_view_type> parse_authority(ur
 std::tuple<std::string, uri::Error, uri::string_view_type> parse_path(uri::string_arg_type uri) {
     auto pos = uri.find_first_of("#?");
     if (pos == uri::npos) {
-        auto path = std::string(uri);
+        // Patched a bug here
+        auto path = "/";
         return { path, uri::Error::None, "" };
     } else {
         auto path = std::string(uri.substr(0, pos));

@@ -10,3 +10,4 @@ project "tweb"
     targetdir "bin/%{cfg.buildcfg}"
     files { "src/*.cxx" }
     links { "ssl", "crypto" }
+    defines { "_DEFAULT_SOURCE", "_XOPERN_SOURCE" }
