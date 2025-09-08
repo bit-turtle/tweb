@@ -17,7 +17,7 @@ int main() {
     std::vector<Tab> tabs;
     unsigned active_tab = 0;
 
-    tabs.push_back({ new Instance("https://bit-turtle.github.io") });
+    tabs.push_back({ new Instance("bit-turtle.github.io") });
 
     struct tb_event e;
     

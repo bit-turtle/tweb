@@ -33,8 +33,14 @@ class Connection {
     Connection(std::string url) {
       uri = new uri::Uri(uri::parse_uri(url));
       if (uri->error != uri::Error::None) {
-        uri->scheme = "http";
-        uri->authority.port = 80;
+        delete uri;
+        std::ostringstream buffer;
+        buffer << "https://" << url;
+        uri = new uri::Uri(uri::parse_uri(buffer.str()));
+        if (uri->error != uri::Error::None) {
+          dat = "Error: Failed to parse url!";
+          return;
+        }
       }
       std::ostringstream host;
       host << uri->scheme << "://" << uri->authority.authority;

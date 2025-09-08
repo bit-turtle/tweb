@@ -1,9 +1,4 @@
-//
-// uri_parser.h
-//
-// Copyright (c) 2021 Jonathan Hollocombe
-// MIT License
-// 
+#pragma once
 
 #ifndef SIMPLE_URI_PARSER_LIBRARY_H
 #define SIMPLE_URI_PARSER_LIBRARY_H
@@ -110,6 +105,9 @@ std::tuple<uri::Authority, uri::Error, uri::string_view_type> parse_authority(ur
     }
 
     auto pos = uri.substr(2).find('/');
+    if (pos == uri::npos) {
+        pos = uri.length()-2;
+    }
     auto auth_string = uri.substr(2, pos);
     auto rem = uri.substr(pos + 2);
     authority.authority = auth_string;
@@ -133,14 +131,13 @@ std::tuple<uri::Authority, uri::Error, uri::string_view_type> parse_authority(ur
 
     authority.host = auth_string.substr(0, pos);
 
-    return { authority, uri::Error::None, rem };
+    return { authority, uri::Error::None, rem.length() > 0 ? rem : "/" };
 }
 
 std::tuple<std::string, uri::Error, uri::string_view_type> parse_path(uri::string_arg_type uri) {
     auto pos = uri.find_first_of("#?");
     if (pos == uri::npos) {
-        // Patched a bug here
-        auto path = "/";
+        auto path = std::string(uri);
         return { path, uri::Error::None, "" };
     } else {
         auto path = std::string(uri.substr(0, pos));
