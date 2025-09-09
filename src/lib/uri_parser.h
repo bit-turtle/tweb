@@ -131,7 +131,7 @@ std::tuple<uri::Authority, uri::Error, uri::string_view_type> parse_authority(ur
 
     authority.host = auth_string.substr(0, pos);
 
-    return { authority, uri::Error::None, rem.length() > 0 ? rem : "/" };
+    return { authority, uri::Error::None, rem };
 }
 
 std::tuple<std::string, uri::Error, uri::string_view_type> parse_path(uri::string_arg_type uri) {

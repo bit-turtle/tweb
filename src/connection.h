@@ -3,6 +3,7 @@
 #include "lib/httplib.h"
 #include "lib/uri_parser.h"
 #include "lib/termbox2.h"
+#include "html.h"
 #include <string>
 #include <sstream>
 #include <vector>
@@ -42,6 +43,8 @@ class Connection {
           return;
         }
       }
+      if (uri->path == "")
+        uri->path = "/";
       std::ostringstream host;
       host << uri->scheme << "://" << uri->authority.authority;
       cli = new httplib::Client(host.str());
@@ -49,6 +52,7 @@ class Connection {
         dat = "Error: Failed to connect to server!";
         return;
       }
+      cli->set_follow_location(true);
       std::ostringstream req;
       if (uri->path[0] == '/') req << uri->path;
       else req << "/";
@@ -110,9 +114,6 @@ class Connection {
       tb_print(0, 0, 0, 0, dat.substr(line, dat.length()-line).c_str());
     }
 
-    void html_render(int* scroll) {
-      tb_print(0, 0, 0, 0, dat.c_str());
-    }
 };
 
 #endif

@@ -6,20 +6,19 @@
 
 class Instance {
   public:
-    Connection* con;
+    Connection* con = nullptr;
     std::stack<std::string> hist;
     std::stack<std::string> fwd;
     ~Instance() {
       delete con;
     }
     Instance(std::string url) {
-      hist.push(url);
-      con = new Connection(url);
+      open(url);
     }
     void open(std::string url) {
       delete con;
       hist.push(url);
-      new Connection(url);
+      con = new Connection(url);
     }
     bool back() {
       if (hist.size()>1) {
